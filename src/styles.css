@@ -1,1 +1,82 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+* {
+ margin: 0;
+ padding: 0;
+}
+
+.fullpage {
+ width: 100vw;
+ height: 100vh;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ background-color: rgba(124, 124, 124, 0.5);
+}
+
+.container {
+ width: 17rem;
+ height: 24rem;
+ background-color: rgb(0, 0, 0);
+ color: white;
+ border: 0.4rem solid rgb(87, 247, 137);
+ flex-direction: column;
+ row-gap: 1rem;
+ border-radius: 1rem;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: relative;
+}
+
+.btn {
+ font-size: 1.2rem;
+ padding: 0.2rem 0.4rem;
+ margin: 0.2rem 0.4rem;
+ background-color: rgb(87, 247, 137);
+ border-radius: 0.4rem;
+}
+
+.text-primary {
+ color: rgb(87, 247, 137);
+}
+
+.ip {
+ width: 80%;
+ height: 2rem;
+ font-size: 1.4rem;
+ font-weight: bold;
+ text-align: center;
+ border-radius: 0.4rem;
+}
+
+.close {
+ top: 0.4rem;
+ right: 0.4rem;
+ position: absolute;
+ font-size: 1.4rem;
+ padding: 0rem 0.2rem;
+ background-color: black;
+ border: 0.1rem solid rgb(87, 247, 137);
+ border-radius: 0.2rem;
+}
+
+.row {
+ display: flex;
+ flex-direction: row;
+ column-gap: 1rem;
+}
+
+.box {
+ width: 3.7rem;
+ height: 3.7rem;
+ font-size: 3.4rem;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ border-radius: 0.4rem;
+ background-color: rgb(87, 247, 137);
+ color: #B197FC;
+ border: 0.1rem solid #B197FC;
+}

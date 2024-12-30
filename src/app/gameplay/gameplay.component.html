@@ -1,0 +1,18 @@
+<div class="fullpage">
+    <div class="container">
+        <button class="close">
+            <i class="fa-solid fa-rotate" style="color: #B197FC;" (click)="getGamePlay()"></i>
+        </button>
+        <h1 class="text-primary">{{gameId}}</h1>
+        <p>your Symbol is : <span class="text-primary">{{symbol}}</span></p>
+        @for (item of gameplay; track $index;let i = $index) {
+            <div class="row">
+                @for(sym of item;track $index;let j = $index){
+                    <div class="box" (click)="sendGamePlay(i,j)">{{sym == 0 ? '': sym}}</div>
+                }
+            </div>
+        }
+    </div>
+
+    
+</div>
