@@ -6,5 +6,5 @@ import { Injectable } from '@angular/core';
 export class Constants {
 
   constructor() { }
-  static readonly URl  : string = 'https://xo-node-lemon.vercel.app/';
+  static readonly URl  : string = 'http://localhost:4207/';
 }

@@ -4,6 +4,7 @@ import { ApiManagerService } from '../utils/api-manager.service';
 import { Constants } from '../utils/constants.service';
 import { Router } from '@angular/router';
 import { LsService } from '../utils/ls.service';
+import { SocketService } from '../utils/socket.service';
 
 @Component({
  selector: 'app-gameid',
@@ -18,7 +19,7 @@ export class GameidComponent {
  generatedCode : string = '';
  playersCount : number = 0;
 
-constructor(private api : ApiManagerService,private route: Router,private ls :LsService){}
+constructor(private api : ApiManagerService,private route: Router,private ls :LsService,private socket : SocketService){}
  generateGameId(){
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let code = '';
@@ -28,6 +29,7 @@ constructor(private api : ApiManagerService,private route: Router,private ls :Ls
   }
   this.generatedCode =  code;
   this.createGame();
+  this.socket.socketConnect();
  }
 
  createGame(){
