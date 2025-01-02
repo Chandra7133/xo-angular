@@ -1,31 +1,36 @@
 <div class="fullpage">
     <div class="container">
-        @if (!is_host && !is_join) {
-            <h1 class="text-primary"><span style="color: #B197FC;" >XO</span> game</h1>
-            <button class="btn" (click)="is_host = true">Host</button>
-            <button class="btn" (click)="is_join = true">Join</button>
+        @if(!host_response){
+            @if (!is_host && !is_join) {
+                <h1 class="text-primary"><span style="color: #B197FC;" >XO</span> game</h1>
+                <button class="btn" (click)="is_host = true">Host</button>
+                <button class="btn" (click)="is_join = true">Join</button>
+            }
+            @else {
+                <button class="close" (click)="is_host = false;is_join = false;generatedCode = ''">
+                    <i class="fa-solid fa-left-long" style="color: #63E6BE;"></i>
+                </button>
+            }
+            
+            @if (is_host) {
+                <button class="btn" (click)="generateGameId()">Generate game Id</button>
+                <input class="ip" type="text" [(ngModel)]="generatedCode" readonly>
+                <p>no of players : <span class="text-primary">{{playersCount}}</span>  &nbsp;
+                    <i class="fa-solid fa-rotate" style="color: #B197FC;" (click)="getPlayerCount()"></i>
+                </p>
+                <button class="btn" (click)="gameStart()">Start</button>
+            }
+            
+            @if(is_join){
+                <h1 class="text-primary">game Id</h1>
+                <input class="ip" type="text" [(ngModel)]="generatedCode">
+                <button class="btn" (click)="joinGame()">Join</button>
+            }
+        }@else {
+            <i class="fa-solid fa-spinner fa-spin-pulse fa-2xl" style="color: #B197FC;"></i>
+            <h4 class="text-primary">Waiting for Host</h4>
         }
-        @else {
-            <button class="close" (click)="is_host = false;is_join = false;generatedCode = ''">
-                <i class="fa-solid fa-left-long" style="color: #63E6BE;"></i>
-            </button>
-        }
-
-        @if (is_host) {
-            <button class="btn" (click)="generateGameId()">Generate game Id</button>
-            <input class="ip" type="text" [(ngModel)]="generatedCode" readonly>
-            <p>no of players : <span class="text-primary">{{playersCount}}</span>  &nbsp;
-                <i class="fa-solid fa-rotate" style="color: #B197FC;" (click)="getPlayerCount()"></i>
-            </p>
-            <button class="btn" (click)="gameStart()">Start</button>
-        }
-
-        @if(is_join){
-            <h1 class="text-primary">game Id</h1>
-            <input class="ip" type="text" [(ngModel)]="generatedCode">
-            <button class="btn" (click)="joinGame()">Join</button>
-        }
-    </div>
+        </div>
 
     
 </div>

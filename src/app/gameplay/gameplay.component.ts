@@ -3,6 +3,7 @@ import { ApiManagerService } from '../utils/api-manager.service';
 import { LsService } from '../utils/ls.service';
 import { Constants } from '../utils/constants.service';
 import { Router } from '@angular/router';
+import { SocketService } from '../utils/socket.service';
 
 @Component({
   selector: 'app-gameplay',
@@ -16,7 +17,7 @@ export class GameplayComponent implements OnInit {
   gameId: string = '';
   symbol: string = '';
   gameplay: any = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-  constructor(private api: ApiManagerService, private ls: LsService, private route: Router) { }
+  constructor(private api: ApiManagerService, private ls: LsService, private route: Router,private socket : SocketService) { }
 
   ngOnInit(): void {
     let data: any = this.ls.getItem('data');
@@ -28,6 +29,17 @@ export class GameplayComponent implements OnInit {
     }
     this.symbol = data['sym'];
     this.getGamePlay();
+    this.moved();
+  }
+
+  moved(){
+    this.socket.moved().subscribe({
+      next:(res:any)=>{
+        if(res){
+          this.getGamePlay();
+        }
+      }
+     })
   }
 
   getGamePlay() {
@@ -52,14 +64,15 @@ export class GameplayComponent implements OnInit {
     else {
       return
     }
-    let params = { gameId: this.gameId, gameplay: this.gameplay };
+    let params = { gameId: this.gameId, gameplay: this.gameplay ,move : this.symbol};
     this.api.doPost(Constants.URl + 'gameplay/sendData', params).subscribe({
       next: (res: any) => {
         if (res['status']) {
-          this.getGamePlay();
+          this.socket.setMove(this.gameId);
         }
         else {
           alert(res['msg']);
+          this.getGamePlay();
         }
       }
     })

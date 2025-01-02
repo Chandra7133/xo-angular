@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiManagerService } from '../utils/api-manager.service';
 import { Constants } from '../utils/constants.service';
@@ -13,13 +13,40 @@ import { SocketService } from '../utils/socket.service';
  templateUrl: './gameid.component.html',
  styleUrl: './gameid.component.css'
 })
-export class GameidComponent {
+export class GameidComponent implements OnInit{
  is_host: boolean = false;
  is_join: boolean = false;
  generatedCode : string = '';
  playersCount : number = 0;
+ host_response : boolean = false;
 
 constructor(private api : ApiManagerService,private route: Router,private ls :LsService,private socket : SocketService){}
+  ngOnInit(): void {
+    this.socket.socketConnect();
+    this.setCount();
+    this.startGame();
+  }
+
+  setCount(){
+    this.socket.getplayerCount().subscribe({
+      next:(res:any)=>{
+        if(res){
+          this.playersCount = res['count']
+        }
+      }
+     })
+  }
+
+  startGame(){
+    this.socket.gamestarted().subscribe({
+      next:(res:any)=>{
+        if(res){
+         this.route.navigate(['gameplay']);
+        }
+      }
+    })
+  }
+
  generateGameId(){
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let code = '';
@@ -29,7 +56,6 @@ constructor(private api : ApiManagerService,private route: Router,private ls :Ls
   }
   this.generatedCode =  code;
   this.createGame();
-  this.socket.socketConnect();
  }
 
  createGame(){
@@ -38,6 +64,7 @@ constructor(private api : ApiManagerService,private route: Router,private ls :Ls
    next:(res:any)=>{
     if(res['status']){
       alert(res['msg']);
+      this.socket.addPlayer(this.generatedCode);
     }
    }
   })
@@ -49,9 +76,11 @@ constructor(private api : ApiManagerService,private route: Router,private ls :Ls
    next:(res:any)=>{
     if(res['status']){
       alert(res['msg']);
+      this.socket.addPlayer(this.generatedCode);
       let data = JSON.stringify({'sym':'O',"gameId":this.generatedCode});
       this.ls.setItem('data',data);
-      this.route.navigate(['gameplay']);
+      // this.route.navigate(['gameplay']);
+      this.host_response = true;
     }
     else{
       alert(res['msg']);
@@ -79,6 +108,7 @@ constructor(private api : ApiManagerService,private route: Router,private ls :Ls
     alert('please wait for other player')
     return
   }
+  this.socket.startGame(this.generatedCode);
   let data = JSON.stringify({'sym':'X',"gameId":this.generatedCode});
   this.ls.setItem('data',data);
   this.route.navigate(['gameplay']);
